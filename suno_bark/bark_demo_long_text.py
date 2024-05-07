@@ -1,5 +1,3 @@
-
-
 # install bark (make sure you have torch>=2 for much faster flash-attention)
 # !pip install git+https://github.com/suno-ai/bark.git
 
@@ -26,6 +24,11 @@ import numpy as np
 script = """
 I have a dream.
 """.replace("\n", " ").strip()
+
+# Read text from input.txt
+with open("pri/input.txt", "r") as file:
+    script = file.read().replace("\n", " ").strip()
+
 
 sentences = nltk.sent_tokenize(script)
 
