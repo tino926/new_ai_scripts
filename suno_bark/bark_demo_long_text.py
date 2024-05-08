@@ -2,6 +2,17 @@
 # !pip install git+https://github.com/suno-ai/bark.git
 
 
+script = """
+I have a dream.
+""".replace("\n", " ").strip()
+
+# Read text from input.txt
+with open("pri/script.txt", "r") as file:
+    script = file.read().replace("\n", " ").strip()
+
+OUTPUTFILE = "output/bark_generation.mp3"
+
+
 from bark import SAMPLE_RATE, generate_audio, preload_models
 from bark.api import semantic_to_waveform
 # from IPython.display import Audio
@@ -20,14 +31,6 @@ nltk.download('punkt')
 from scipy.io.wavfile import write as write_wav
 import nltk  # we'll use this to split into sentences
 import numpy as np
-
-script = """
-I have a dream.
-""".replace("\n", " ").strip()
-
-# Read text from input.txt
-with open("pri/input.txt", "r") as file:
-    script = file.read().replace("\n", " ").strip()
 
 
 sentences = nltk.sent_tokenize(script)
@@ -61,7 +64,7 @@ audio_array = np.concatenate(pieces)
 
 import soundfile as sf
 # save audio to disk as mp3 
-sf.write("bark_generation.mp3", audio_array, SAMPLE_RATE)
+sf.write(OUTPUTFILE, audio_array, SAMPLE_RATE)
 
 # write_wav("bark_generation.wav", SAMPLE_RATE, audio_array)
 # Audio(audio_array, rate=SAMPLE_RATE*1.1)
