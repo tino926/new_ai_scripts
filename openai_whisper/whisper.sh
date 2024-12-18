@@ -1,7 +1,19 @@
 #!/bin/bash
 
 # define working directory
-WORKING_DIR=$(pwd)
+# check if argument is provided
+if [ $# -eq 0 ]; then
+    echo "No directory provided. Using current directory."
+    WORKING_DIR="$(pwd)"
+else
+    WORKING_DIR="$1"
+    
+    # check if provided directory exists
+    if [ ! -d "$WORKING_DIR" ]; then
+        echo "Directory $WORKING_DIR does not exist."
+        exit 1
+    fi
+fi
 
 # define output directory
 OUTPUT_DIR="$WORKING_DIR/output"
@@ -24,11 +36,11 @@ for MODEL in "${WHISPER_MODELS[@]}"; do
     # Loop through each audio format
     for FORMAT in "${AUDIO_FORMATS[@]}"; do
         # Process each file of that format
-        for FILE in $FORMAT; do
+        for FILE in "$WORKING_DIR"/$FORMAT; do
+            echo "Processing: $FILE"
+
             # Skip if no files match the pattern
             [ -e "$FILE" ] || continue
-
-            echo "Processing: $FILE"
 
             # whisper "$FILE"
             whisper "$FILE" \
